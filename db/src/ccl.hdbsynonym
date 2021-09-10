@@ -1,0 +1,14 @@
+{
+  "vts_measurements": {
+    "target": {
+      "object": "vt_measurements",
+      "schema": "CCL"
+    }
+  },
+  "vs_ALCO": {
+    "target": {
+      "object": "V_ALCO",
+      "schema": "CCL"
+    }
+  }
+}

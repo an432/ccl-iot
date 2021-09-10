@@ -1,0 +1,11 @@
+COLUMN TABLE "l_measurements" ("id" NVARCHAR(5000),
+	"time" LONGDATE,
+	"alco" REAL,
+	"_ThingType" NVARCHAR(5000),
+	"_NPST" NVARCHAR(5000),
+	"thingType" NVARCHAR(5000),
+	"path" NVARCHAR(5000),
+	PRIMARY KEY (
+		"id",
+		"time"
+	))
