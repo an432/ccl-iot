@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="ccl_iotperdayDHT11" applyPrivilegeType="NONE" dataCategory="CUBE" dimensionType="STANDARD" schemaVersion="3.0" outputViewType="Projection" cacheInvalidationPeriod="NONE" enforceSqlExecution="true">
+<descriptions defaultDescription="cv_ccliot"/>
+<localVariables>
+  <variable id="TheDay" parameter="true">
+    <descriptions defaultDescription="view start date-time"/>
+    <variableProperties datatype="DATE" mandatory="true" defaultValue="2021.01.01">
+      <valueDomain type="Date"/>
+      <selection multiLine="false" type="SingleValue"/>
+    </variableProperties>
+  </variable></localVariables>
+<variableMappings/>
+<dataSources>
+  <DataSource id="vts_measurementsDHT11">
+    <resourceUri>vts_measurementsDHT11</resourceUri>
+  </DataSource>
+</dataSources>
+<calculationViews/>
+
+<logicalModel id="vts_measurementsDHT11" filterExpressionLanguage="SQL">
+  <attributes>
+    <attribute id="id" order="1" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="id"/>
+      <keyMapping columnObjectName="vts_measurementsDHT11" columnName="id"/>
+    </attribute>
+    <attribute id="time" order="2" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="time"/>
+      <keyMapping columnObjectName="vts_measurementsDHT11" columnName="time"/>
+    </attribute>
+    <attribute id="_ThingType" order="5" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="_ThingType"/>
+      <keyMapping columnObjectName="vts_measurementsDHT11" columnName="_ThingType"/>
+    </attribute>
+    <attribute id="_NPST" order="6" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="_NPST"/>
+      <keyMapping columnObjectName="vts_measurementsDHT11" columnName="_NPST"/>
+    </attribute>
+    <attribute id="thingType" order="7" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="thingType"/>
+      <keyMapping columnObjectName="vts_measurementsDHT11" columnName="thingType"/>
+    </attribute>
+    <attribute id="path" order="8" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="path"/>
+      <keyMapping columnObjectName="vts_measurementsDHT11" columnName="path"/>
+    </attribute>
+  </attributes>
+  <calculatedAttributes/>
+  <baseMeasures>
+    <measure id="Humidity" order="3" aggregationType="max" measureType="simple">
+      <descriptions defaultDescription="Humidity"/>
+      <measureMapping columnObjectName="vts_measurementsDHT11" columnName="Humidity"/>
+    </measure>
+    <measure id="Temperature" order="4" aggregationType="max" measureType="simple">
+      <descriptions defaultDescription="Temperature"/>
+      <measureMapping columnObjectName="vts_measurementsDHT11" columnName="Temperature"/>
+    </measure>
+  </baseMeasures>
+  <calculatedMeasures/>
+  <restrictedMeasures/>
+
+  <localDimensions/>
+
+
+  <filter>&quot;time&quot; &gt;= concat('$$TheDay$$',' 08:00:00') and &quot;time&quot; &lt;= concat('$$TheDay$$',' 23:59:59')</filter>
+
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="100" y="105"/>
+    
+      <rectangleSize width="160"/>
+    </shape>
+    
+  </shapes>
+</layout>
+</Calculation:scenario>

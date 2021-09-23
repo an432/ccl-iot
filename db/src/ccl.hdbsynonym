@@ -10,5 +10,11 @@
       "object": "V_ALCO",
       "schema": "CCL"
     }
+  },
+  "vts_measurementsDHT11": {
+    "target": {
+      "object": "v_measurements_dht11",
+      "schema": "CCL"
+    }
   }
 }

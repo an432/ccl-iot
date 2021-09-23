@@ -1,22 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Calculation:scenario xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="cv_ccliot" applyPrivilegeType="NONE" dataCategory="CUBE" dimensionType="STANDARD" schemaVersion="3.0" outputViewType="Projection" cacheInvalidationPeriod="NONE" enforceSqlExecution="true">
+<Calculation:scenario xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="ccl_iotperdayALCO" applyPrivilegeType="NONE" dataCategory="CUBE" dimensionType="STANDARD" schemaVersion="3.0" outputViewType="Projection" cacheInvalidationPeriod="NONE" enforceSqlExecution="true">
 <descriptions defaultDescription="cv_ccliot"/>
 <localVariables>
-  <variable id="dateFrom" parameter="true">
+  <variable id="TheDay" parameter="true">
     <descriptions defaultDescription="view start date-time"/>
     <variableProperties datatype="NVARCHAR" length="13" mandatory="true" defaultValue="2021.01.01">
       <valueDomain type="empty"/>
       <selection multiLine="false" type="SingleValue"/>
     </variableProperties>
-  </variable>
-  <variable id="dateTo" parameter="true">
-    <descriptions defaultDescription="view finish date-time"/>
-    <variableProperties datatype="NVARCHAR" length="13" mandatory="true" defaultValue="2023.01.01">
-      <valueDomain type="empty"/>
-      <selection multiLine="false" type="SingleValue"/>
-    </variableProperties>
-  </variable>
-</localVariables>
+  </variable></localVariables>
 <variableMappings/>
 <dataSources>
   <DataSource id="vts_measurements">
@@ -35,26 +27,26 @@
       <descriptions defaultDescription="time"/>
       <keyMapping columnObjectName="vts_measurements" columnName="time"/>
     </attribute>
-    <attribute id="_ThingType" order="4" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="_ThingType" order="3" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="_ThingType"/>
       <keyMapping columnObjectName="vts_measurements" columnName="_ThingType"/>
     </attribute>
-    <attribute id="_NPST" order="5" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="_NPST" order="4" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="_NPST"/>
       <keyMapping columnObjectName="vts_measurements" columnName="_NPST"/>
     </attribute>
-    <attribute id="thingType" order="6" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="thingType" order="5" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="thingType"/>
       <keyMapping columnObjectName="vts_measurements" columnName="thingType"/>
     </attribute>
-    <attribute id="path" order="7" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="path" order="6" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="path"/>
       <keyMapping columnObjectName="vts_measurements" columnName="path"/>
     </attribute>
   </attributes>
   <calculatedAttributes/>
   <baseMeasures>
-    <measure id="alco" order="3" aggregationType="max" measureType="simple">
+    <measure id="alco" order="7" aggregationType="sum" measureType="simple">
       <descriptions defaultDescription="alco"/>
       <measureMapping columnObjectName="vts_measurements" columnName="alco"/>
     </measure>
@@ -65,13 +57,15 @@
   <localDimensions/>
 
 
-  <filter>&quot;time&quot; &gt;= '$$dateFrom$$' and &quot;time&quot; &lt;= '$$dateTo$$'</filter>
+  <filter>&quot;time&quot; &gt;= concat('$$TheDay$$',' 08:00:00') and &quot;time&quot; &lt;= concat('$$TheDay$$',' 23:59:59')</filter>
 
 </logicalModel>
 <layout>
   <shapes>
     <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
-      <upperLeftCorner x="40" y="85"/>
+      <upperLeftCorner x="100" y="105"/>
+    
+      <rectangleSize width="160"/>
     </shape>
     
   </shapes>
