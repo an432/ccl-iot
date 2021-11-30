@@ -1,0 +1,10 @@
+COLUMN TABLE "things" (
+  "ID" varchar(50),
+  "NAME" varchar(10),
+  "CALIBR_CO2" FLOAT,
+  "CALIBR_NOISE" FLOAT,
+  "CALIBR_ALCO" FLOAT,
+  "CALIBR_TEMPERATURE" FLOAT,
+  "CALIBR_HUMIDITY" float,
+  PRIMARY KEY ("ID")
+)

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="cv_alco" applyPrivilegeType="NONE" dataCategory="CUBE" dimensionType="STANDARD" schemaVersion="3.0" outputViewType="Projection" cacheInvalidationPeriod="NONE" enforceSqlExecution="true">
+<descriptions defaultDescription="cv_alco"/>
+<localVariables/>
+<variableMappings/>
+<dataSources>
+  <DataSource id="l_measurements">
+    <resourceUri>l_measurements</resourceUri>
+  </DataSource>
+  <DataSource id="things">
+    <resourceUri>things</resourceUri>
+  </DataSource>
+</dataSources>
+<calculationViews>
+  <calculationView xsi:type="Calculation:JoinView" id="Join_1" cardinality="CN_N" joinType="inner">
+    <viewAttributes>
+      <viewAttribute id="id"/>
+      <viewAttribute id="time"/>
+      <viewAttribute id="alco_orig"/>
+      <viewAttribute id="NAME"/>
+    
+      <viewAttribute id="CALIBR_ALCO" aggregationType="sum"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="l_measurements">
+      <mapping xsi:type="Calculation:AttributeMapping" target="id" source="id"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="time" source="time"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="alco_orig" source="alco"/>
+    </input>
+    <input node="things">
+      <mapping xsi:type="Calculation:AttributeMapping" target="NAME" source="NAME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CALIBR_ALCO" source="CALIBR_ALCO"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="id" source="ID"/>
+    </input>
+    <joinAttribute name="id"/>
+  </calculationView>
+</calculationViews>
+
+<logicalModel id="Join_1" filterExpressionLanguage="SQL">
+  <attributes>
+    <attribute id="id" order="1" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="id"/>
+      <keyMapping columnObjectName="Join_1" columnName="id"/>
+    </attribute>
+    <attribute id="time" order="2" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="time"/>
+      <keyMapping columnObjectName="Join_1" columnName="time"/>
+    </attribute>
+    <attribute id="NAME" order="4" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="NAME"/>
+      <keyMapping columnObjectName="Join_1" columnName="NAME"/>
+    </attribute>
+  </attributes>
+  <calculatedAttributes>
+    <calculatedAttribute id="days_id" order="5" semanticType="empty" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Date ID">
+        <comment text="разница в днях до 01.01.1900"/>
+      </descriptions>
+      <keyCalculation datatype="NVARCHAR" expressionLanguage="SQL" length="13">
+        <formula>days_between('1900-01-01', &quot;time&quot;)</formula>
+      </keyCalculation>
+      </calculatedAttribute></calculatedAttributes>
+  <baseMeasures>
+    <measure id="alco_orig" order="3" aggregationType="sum" measureType="simple">
+      <descriptions defaultDescription="alco"/>
+      <measureMapping columnObjectName="Join_1" columnName="alco_orig"/>
+    </measure>
+  
+    <measure id="CALIBR_ALCO" order="7" aggregationType="sum" measureType="simple">
+      <descriptions defaultDescription="CALIBR_ALCO"/>
+      <measureMapping columnObjectName="Join_1" columnName="CALIBR_ALCO"/>
+    </measure>
+  </baseMeasures>
+  <calculatedMeasures>
+    <measure id="alco" order="6" aggregationType="sum" measureType="simple" datatype="REAL" expressionLanguage="SQL">
+      <descriptions defaultDescription="alco"/>
+      <formula>&quot;alco_orig&quot;*&quot;CALIBR_ALCO&quot;</formula>
+      
+      </measure>
+  </calculatedMeasures>
+  <restrictedMeasures/>
+
+
+  <localDimensions/>
+
+
+
+  <filter>&quot;alco&quot;&lt;0.05</filter>
+
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="40" y="85"/>
+    </shape>
+    
+  
+    <shape expanded="true" modelObjectName="Join_1" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="100" y="223"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape modelObjectName="l_measurements" modelObjectNameSpace="Join_1" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="20" y="30"/>
+      <rectangleSize width="158"/>
+    </shape>
+    <shape modelObjectName="things" modelObjectNameSpace="Join_1" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="320" y="30"/>
+      <rectangleSize width="117"/>
+    </shape>
+  </shapes>
+</layout>
+</Calculation:scenario>

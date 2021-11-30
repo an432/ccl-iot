@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="cv_CO2" applyPrivilegeType="NONE" dataCategory="CUBE" dimensionType="STANDARD" schemaVersion="3.0" outputViewType="Projection" cacheInvalidationPeriod="NONE" enforceSqlExecution="true">
+<descriptions defaultDescription="cv_CO2"/>
+<localVariables/>
+<variableMappings/>
+<dataSources>
+  <DataSource id="l_measurements_CO2">
+    <resourceUri>l_measurements_CO2</resourceUri>
+  </DataSource>
+  <DataSource id="things">
+    <resourceUri>things</resourceUri>
+  </DataSource>
+</dataSources>
+<calculationViews>
+  <calculationView xsi:type="Calculation:JoinView" id="Join_1" cardinality="CN_N" joinType="inner">
+    <viewAttributes>
+      <viewAttribute id="id"/>
+      <viewAttribute id="time"/>
+      <viewAttribute id="CO2_orig"/>
+      <viewAttribute id="NAME"/>
+    
+      <viewAttribute id="CALIBR_CO2" aggregationType="sum"/>
+    </viewAttributes>
+    <calculatedViewAttributes>
+      <calculatedViewAttribute id="CO2" datatype="REAL" expressionLanguage="SQL">
+        <formula>&quot;CO2_orig&quot;*&quot;CALIBR_CO2&quot;</formula>
+      </calculatedViewAttribute>
+    </calculatedViewAttributes>
+    <input node="l_measurements_CO2">
+      <mapping xsi:type="Calculation:AttributeMapping" target="id" source="id"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="time" source="time"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CO2_orig" source="CO2"/>
+    </input>
+    <input node="things">
+      <mapping xsi:type="Calculation:AttributeMapping" target="NAME" source="NAME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CALIBR_CO2" source="CALIBR_CO2"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="id" source="ID"/>
+    </input>
+    <joinAttribute name="id"/>
+  </calculationView>
+</calculationViews>
+
+<logicalModel id="Join_1">
+  <attributes>
+    <attribute id="id" order="1" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="id"/>
+      <keyMapping columnObjectName="Join_1" columnName="id"/>
+    </attribute>
+    <attribute id="time" order="2" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="time"/>
+      <keyMapping columnObjectName="Join_1" columnName="time"/>
+    </attribute>
+    <attribute id="NAME" order="4" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="NAME"/>
+      <keyMapping columnObjectName="Join_1" columnName="NAME"/>
+    </attribute>
+  </attributes>
+  <calculatedAttributes>
+    <calculatedAttribute id="days_id" order="5" semanticType="empty" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Days ID"/>
+      <keyCalculation datatype="NVARCHAR" expressionLanguage="SQL" length="13">
+        <formula>days_between('1900-01-01', &quot;time&quot;)</formula>
+      </keyCalculation>
+    </calculatedAttribute>
+  </calculatedAttributes>
+  <baseMeasures>
+    <measure id="CO2" order="3" aggregationType="avg" measureType="simple">
+      <descriptions defaultDescription="CO2"/>
+      <measureMapping columnObjectName="Join_1" columnName="CO2"/>
+    </measure>
+  
+    <measure id="CO2_orig" order="6" aggregationType="sum" measureType="simple">
+      <descriptions defaultDescription="CO2_orig"/>
+      <measureMapping columnObjectName="Join_1" columnName="CO2_orig"/>
+    </measure>
+  </baseMeasures>
+  <calculatedMeasures/>
+  <restrictedMeasures/>
+
+
+  <localDimensions/>
+
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="40" y="85"/>
+    </shape>
+    
+  
+    <shape expanded="true" modelObjectName="Join_1" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="91" y="192"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape modelObjectName="l_measurements_CO2" modelObjectNameSpace="Join_1" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="20" y="30"/>
+      <rectangleSize width="190"/>
+    </shape>
+    <shape modelObjectName="things" modelObjectNameSpace="Join_1" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="320" y="30"/>
+      <rectangleSize width="117"/>
+    </shape>
+  </shapes>
+</layout>
+</Calculation:scenario>

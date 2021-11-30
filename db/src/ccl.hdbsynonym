@@ -11,9 +11,21 @@
       "schema": "CCL"
     }
   },
-  "vts_measurementsDHT11": {
+  "vs_DHT11": {
     "target": {
-      "object": "v_measurements_dht11",
+      "object": "V_DHT11",
+      "schema": "CCL"
+    }
+  },
+  "vs_Noise": {
+    "target": {
+      "object": "V_NOISE",
+      "schema": "CCL"
+    }
+  },
+  "vs_CO2": {
+    "target": {
+      "object": "V_CO2",
       "schema": "CCL"
     }
   }

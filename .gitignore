@@ -2,3 +2,5 @@ mta_archives/
 
 # auto generated wildcard
 db/.env
+# auto generated wildcard
+CCLapp/gen/db/.env

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="cv_DHT11" applyPrivilegeType="NONE" dataCategory="CUBE" dimensionType="STANDARD" schemaVersion="3.0" outputViewType="Projection" cacheInvalidationPeriod="NONE" enforceSqlExecution="true">
+<descriptions defaultDescription="DHT11"/>
+<localVariables/>
+<variableMappings/>
+<dataSources>
+  <DataSource id="things">
+    <resourceUri>things</resourceUri>
+  </DataSource>
+  <DataSource id="l_measurements_DHT11">
+    <resourceUri>l_measurements_DHT11</resourceUri>
+  </DataSource>
+</dataSources>
+<calculationViews>
+  <calculationView xsi:type="Calculation:JoinView" id="Join_1" cardinality="CN_N" joinType="inner">
+    <viewAttributes>
+      <viewAttribute id="NAME"/>
+      <viewAttribute id="id"/>
+      <viewAttribute id="time"/>
+      <viewAttribute id="Humidity_orig"/>
+      <viewAttribute id="Temperature_orig"/>
+      <viewAttribute id="CALIBR_TEMPERATURE" aggregationType="sum"/>
+      <viewAttribute id="CALIBR_HUMIDITY" aggregationType="sum"/>
+      <viewAttribute hidden="true" id="JOIN$ID$id"/>
+    </viewAttributes>
+    <calculatedViewAttributes>
+      <calculatedViewAttribute id="Humidity" datatype="REAL" expressionLanguage="SQL">
+        <formula>&quot;Humidity_orig&quot;*&quot;CALIBR_HUMIDITY&quot;</formula>
+      </calculatedViewAttribute>
+      <calculatedViewAttribute id="Temperature" datatype="REAL" expressionLanguage="SQL">
+        <formula>&quot;Temperature_orig&quot;*&quot;CALIBR_TEMPERATURE&quot;</formula>
+      </calculatedViewAttribute>
+    </calculatedViewAttributes>
+    <input node="things">
+      <mapping xsi:type="Calculation:AttributeMapping" target="NAME" source="NAME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CALIBR_TEMPERATURE" source="CALIBR_TEMPERATURE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CALIBR_HUMIDITY" source="CALIBR_HUMIDITY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$ID$id" source="ID"/>
+    </input>
+    <input node="l_measurements_DHT11">
+      <mapping xsi:type="Calculation:AttributeMapping" target="id" source="id"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="time" source="time"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="Humidity_orig" source="Humidity"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="Temperature_orig" source="Temperature"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$ID$id" source="id"/>
+    </input>
+    <joinAttribute name="JOIN$ID$id"/>
+  </calculationView>
+</calculationViews>
+
+<logicalModel id="Join_1">
+  <attributes>
+    <attribute id="NAME" order="1" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="NAME"/>
+      <keyMapping columnObjectName="Join_1" columnName="NAME"/>
+    </attribute>
+    <attribute id="id" order="2" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="id"/>
+      <keyMapping columnObjectName="Join_1" columnName="id"/>
+    </attribute>
+    <attribute id="time" order="3" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="time"/>
+      <keyMapping columnObjectName="Join_1" columnName="time"/>
+    </attribute></attributes>
+  <calculatedAttributes>
+    <calculatedAttribute id="days_id" order="6" semanticType="empty" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Days ID"/>
+      <keyCalculation datatype="NVARCHAR" expressionLanguage="SQL" length="13">
+        <formula>days_between('1900-01-01', &quot;time&quot;)</formula>
+      </keyCalculation>
+      </calculatedAttribute>
+  </calculatedAttributes>
+  <baseMeasures>
+    <measure id="Humidity" order="4" aggregationType="avg" measureType="simple">
+      <descriptions defaultDescription="Humidity"/>
+      <measureMapping columnObjectName="Join_1" columnName="Humidity"/>
+    </measure>
+    <measure id="Temperature" order="5" aggregationType="avg" measureType="simple">
+      <descriptions defaultDescription="Temperature"/>
+      <measureMapping columnObjectName="Join_1" columnName="Temperature"/>
+    </measure>
+  
+    <measure id="Humidity_orig" order="7" aggregationType="sum" measureType="simple">
+      <descriptions defaultDescription="Humidity_orig"/>
+      <measureMapping columnObjectName="Join_1" columnName="Humidity_orig"/>
+    </measure>
+    <measure id="Temperature_orig" order="8" aggregationType="sum" measureType="simple">
+      <descriptions defaultDescription="Temperature_orig"/>
+      <measureMapping columnObjectName="Join_1" columnName="Temperature_orig"/>
+    </measure>
+  </baseMeasures>
+  <calculatedMeasures/>
+  <restrictedMeasures/>
+
+
+  <localDimensions/>
+
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="40" y="85"/>
+    </shape>
+    
+  
+    <shape expanded="true" modelObjectName="Join_1" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="100" y="201"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape modelObjectName="things" modelObjectNameSpace="Join_1" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="365" y="88"/>
+      <rectangleSize width="117"/>
+    </shape>
+    <shape modelObjectName="l_measurements_DHT11" modelObjectNameSpace="Join_1" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="44" y="30"/>
+      <rectangleSize width="202"/>
+    </shape>
+  </shapes>
+</layout>
+</Calculation:scenario>

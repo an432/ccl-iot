@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="cv_noise" applyPrivilegeType="NONE" dataCategory="CUBE" dimensionType="STANDARD" schemaVersion="3.0" outputViewType="Projection" cacheInvalidationPeriod="NONE" enforceSqlExecution="true">
+<descriptions defaultDescription="cv_noise"/>
+<localVariables/>
+<variableMappings/>
+<dataSources>
+  <DataSource id="l_measurements_Noise">
+    <resourceUri>l_measurements_Noise</resourceUri>
+  </DataSource>
+  <DataSource id="things">
+    <resourceUri>things</resourceUri>
+  </DataSource>
+</dataSources>
+<calculationViews>
+  <calculationView xsi:type="Calculation:JoinView" id="Join_1" cardinality="CN_N" joinType="inner">
+    <viewAttributes>
+      <viewAttribute id="id"/>
+      <viewAttribute id="time"/>
+      <viewAttribute id="SoundLevel"/>
+      <viewAttribute id="NoiseLevel_orig"/>
+      <viewAttribute id="NAME"/>
+    
+      <viewAttribute id="CALIBR_NOISE" aggregationType="sum"/>
+    </viewAttributes>
+    <calculatedViewAttributes>
+      <calculatedViewAttribute id="NoiseLevel" datatype="INTEGER" expressionLanguage="SQL">
+        <formula>&quot;NoiseLevel_orig&quot;*&quot;CALIBR_NOISE&quot;</formula>
+      </calculatedViewAttribute>
+    </calculatedViewAttributes>
+    <input node="l_measurements_Noise">
+      <mapping xsi:type="Calculation:AttributeMapping" target="id" source="id"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="time" source="time"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="SoundLevel" source="SoundLevel"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="NoiseLevel_orig" source="NoiseLevel"/>
+    </input>
+    <input node="things">
+      <mapping xsi:type="Calculation:AttributeMapping" target="NAME" source="NAME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CALIBR_NOISE" source="CALIBR_NOISE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="id" source="ID"/>
+    </input>
+    <joinAttribute name="id"/>
+  </calculationView>
+</calculationViews>
+
+<logicalModel id="Join_1">
+  <attributes>
+    <attribute id="id" order="1" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="id"/>
+      <keyMapping columnObjectName="Join_1" columnName="id"/>
+    </attribute>
+    <attribute id="time" order="2" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="time"/>
+      <keyMapping columnObjectName="Join_1" columnName="time"/>
+    </attribute>
+    <attribute id="NAME" order="5" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="NAME"/>
+      <keyMapping columnObjectName="Join_1" columnName="NAME"/>
+    </attribute>
+  </attributes>
+  <calculatedAttributes>
+    <calculatedAttribute id="days_id" order="6" semanticType="empty" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Days ID"/>
+      <keyCalculation datatype="NVARCHAR" expressionLanguage="SQL" length="13">
+        <formula>days_between('1900-01-01', &quot;time&quot;)</formula>
+      </keyCalculation>
+      </calculatedAttribute>
+  </calculatedAttributes>
+  <baseMeasures>
+    <measure id="SoundLevel" order="3" aggregationType="avg" measureType="simple">
+      <descriptions defaultDescription="SoundLevel"/>
+      <measureMapping columnObjectName="Join_1" columnName="SoundLevel"/>
+    </measure>
+    <measure id="NoiseLevel" order="4" aggregationType="avg" measureType="simple">
+      <descriptions defaultDescription="NoiseLevel"/>
+      <measureMapping columnObjectName="Join_1" columnName="NoiseLevel"/>
+    </measure>
+  
+    <measure id="NoiseLevel_orig" order="7" aggregationType="sum" measureType="simple">
+      <descriptions defaultDescription="NoiseLevel_orig"/>
+      <measureMapping columnObjectName="Join_1" columnName="NoiseLevel_orig"/>
+    </measure>
+  </baseMeasures>
+  <calculatedMeasures/>
+  <restrictedMeasures/>
+
+
+  <localDimensions/>
+
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="40" y="85"/>
+    </shape>
+    
+  
+    <shape expanded="true" modelObjectName="Join_1" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="120" y="211"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape modelObjectName="l_measurements_Noise" modelObjectNameSpace="Join_1" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="20" y="30"/>
+      <rectangleSize width="198"/>
+    </shape>
+    <shape modelObjectName="things" modelObjectNameSpace="Join_1" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="320" y="30"/>
+      <rectangleSize width="117"/>
+    </shape>
+  </shapes>
+</layout>
+</Calculation:scenario>
